@@ -23,25 +23,11 @@ THREADED_RENDERING_DEFAULT := 0
 
 TARGET_NAME   := flycast
 
-ifeq ($(HAVE_CLANG),1)
-	CXX      = ${CC_PREFIX}clang++
-	CC       = ${CC_PREFIX}clang
-	SHARED   := -fuse-ld=lld
-else
-	CXX      ?= ${CC_PREFIX}g++
-	CC       ?= ${CC_PREFIX}gcc
-	SHARED   :=
-endif
-CC_AS    ?= ${CC_PREFIX}as
-
 MFLAGS   := 
 ASFLAGS  := 
-LDFLAGS  :=
 LDFLAGS_END :=
 INCFLAGS :=
 LIBS     :=
-CFLAGS   := 
-CXXFLAGS :=
 
 GIT_VERSION := " $(shell git rev-parse --short HEAD || echo unknown)"
 ifneq ($(GIT_VERSION)," unknown")
@@ -984,7 +970,7 @@ LIBS     += -lm
 PREFIX        ?= /usr/local
 
 ifneq (,$(findstring arm, $(ARCH)))
-	CC_AS    = ${CC_PREFIX}gcc #The ngen_arm.S must be compiled with gcc, not as
+	CC_AS    = ${CC_PREFIX}${CC} #The ngen_arm.S must be compiled with gcc, not as
 	ASFLAGS  += $(CFLAGS)
 endif
 
